@@ -1,0 +1,19 @@
+Q:Preciso agendar uma consulta
+    A:Você pode agendar uma consulta pelo aplicativo ou entrar em contato via Whatsapp ou Ligação
+
+Q:Como posso buscar agenda disponivel
+    A:Voce pode buscar agenda disponivel via aplicativo filtrando a cidade, especialidade, médico ou data
+    A:Se você ligar ou entrar em contato via Whatsapp, basta informar seus dados de beneficiario e serão informadas as agendas disponiveis
+
+Q:Como posso visualizar vagas disponiveis
+    A:Você pode usar o aplicativo para verificar as vagas disponiveis
+    A:Se você ligar ou entrar em contato via Whatsapp basta informar os dados para saber das vagas
+
+Q:Como posso reservar ou fazer um agendamento
+    A:Pelo aplicativo basta selecionar dia, horario e profissional de preferencia
+    A:Se voce ligar ou entrar em contato via Whatsapp, basta informar seus dados e sera informada uma agenda para voce escolher
+    e assim ter seu atendimento confirmado
+
+Q:Como posso confirmar agendamento
+    A:Pelo aplicativo voce pode confirmar os dados ao fim do agendamento da consulta
+    A:Se voce ligar ou entrar em contato via whatsapp, ao fim do atendimento seu atendimento será confirmado

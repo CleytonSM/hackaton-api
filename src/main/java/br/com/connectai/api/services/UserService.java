@@ -32,7 +32,7 @@ public class UserService {
         Doctor doctor = doctorService.getDoctorByEmail(login.getEmail());
         if(doctor != null) {
             LoginReturnDTO result = new LoginReturnDTO();
-            result.setLabel("DOCTOR");
+            result.setLabel(doctor.getAuth().getAuthName());
             result.setId(doctor.getId());
             //Authentication authentication = userAuthenticationManager
             //        .authenticateDoctor(new UsernamePasswordAuthenticationToken(doctor, "$2a$12$4kZsQIM8ux7u0fgBhMB31eEF9lvgbrZrJSh3M5DxUBLpwidiesdGm"));
@@ -43,7 +43,7 @@ public class UserService {
         Patient patient = patientService.getPatientByEmail(login.getEmail());
         if(patient != null) {
             LoginReturnDTO result = new LoginReturnDTO();
-            result.setLabel("DOCTOR");
+            result.setLabel(patient.getAuth().getAuthName());
             result.setId(patient.getId());
             //Authentication authentication = userAuthenticationManager
                     //authenticateDoctor(new UsernamePasswordAuthenticationToken(doctor, "$2a$12$4kZsQIM8ux7u0fgBhMB31eEF9lvgbrZrJSh3M5DxUBLpwidiesdGm"));
