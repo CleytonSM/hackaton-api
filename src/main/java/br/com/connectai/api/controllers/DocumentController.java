@@ -1,0 +1,36 @@
+package br.com.connectai.api.controllers;
+
+import br.com.connectai.api.models.dto.DocumentResponse;
+import br.com.connectai.api.services.DocumentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/documents")
+public class DocumentController {
+    @Autowired
+    private DocumentService documentService;
+
+    @PostMapping("/upload/{patientId}")
+    public void uploadDocument(@PathVariable int patientId, @RequestParam("file") MultipartFile file) throws IOException {
+        documentService.uploadDocument(patientId, file);
+    }
+
+    // update documebnt by patientId and documentId
+
+
+    @GetMapping("/{patientId}")
+    public ResponseEntity<DocumentResponse> listDocumentsByPatientId(@PathVariable int patientId) {
+        return new ResponseEntity<>(documentService.listDocumentsByPatientId(patientId), HttpStatus.OK);
+    }
+}

@@ -22,4 +22,8 @@ public class PatientService {
     public void save(Patient patient) {
         repository.save(patient);
     }
+
+    public Patient getAtomicPatientById(int patientId) {
+        return repository.findById(patientId).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+    }
 }

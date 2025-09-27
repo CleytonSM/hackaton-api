@@ -25,6 +25,9 @@ public class Patient {
     @Column(length = 100)
     private String email;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -45,6 +48,14 @@ public class Patient {
 
 
     public Patient() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getId() {
