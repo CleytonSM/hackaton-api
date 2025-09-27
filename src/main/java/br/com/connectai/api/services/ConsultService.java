@@ -6,6 +6,7 @@ import br.com.connectai.api.models.db.ConsultId;
 import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Patient;
 import br.com.connectai.api.models.dto.ConsultDTO;
+import br.com.connectai.api.models.dto.ConsultIdDTO;
 import br.com.connectai.api.models.dto.DoctorResponse;
 import br.com.connectai.api.models.enums.SpecialtiesEnum;
 import br.com.connectai.api.repository.AvailableRepository;
@@ -77,5 +78,20 @@ public class ConsultService {
     public List<Consult> getAllConsultsByPatient(int patientId) {
         Patient patient = patientService.getAtomicPatientById(patientId);
         return repository.findAllByPatient(patient);
+    }
+
+    @Transactional
+    public void updateConsultStatus(ConsultIdDTO id, boolean hasHappened) {
+        ConsultId consultId = new ConsultId();
+        consultId.setDoctorId(id.getDoctorId());
+        consultId.setPatientId(id.getPatientId());
+
+        Consult consult = getAtomicConsultById(consultId);
+        consult.setHasHappened(hasHappened);
+        repository.save(consult);
+    }
+
+    public Consult getAtomicConsultById(ConsultId id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
     }
 }
