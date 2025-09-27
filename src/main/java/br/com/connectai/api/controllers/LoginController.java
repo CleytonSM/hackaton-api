@@ -17,9 +17,8 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDTO login) {
-        userService.login(login);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> login(@RequestBody LoginDTO login) {
+        return ResponseEntity.ok(userService.login(login));
     }
 
 }

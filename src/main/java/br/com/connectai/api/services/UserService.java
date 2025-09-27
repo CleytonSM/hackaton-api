@@ -5,7 +5,12 @@ import br.com.connectai.api.helpers.PasswordEncoderHelper;
 import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Patient;
 import br.com.connectai.api.models.dto.LoginDTO;
+import br.com.connectai.api.models.dto.LoginReturnDTO;
+import br.com.connectai.api.security.jwt.JwtUtils;
+import br.com.connectai.api.security.user.UserAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,27 +23,32 @@ public class UserService {
     private PasswordEncoderHelper passwordEncoderHelper;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private UserAuthenticationManager userAuthenticationManager;
 
-    public void login(LoginDTO login) {
+    public LoginReturnDTO login(LoginDTO login) {
         Doctor doctor = doctorService.getDoctorByEmail(login.getEmail());
         if(doctor != null) {
-            String pass = passwordEncoderHelper.generateCode();
-            String hashedPass = passwordEncoderHelper.encodePassword(pass);
-            doctor.setPassword(hashedPass);
-            doctorService.save(doctor);
-            emailService.sendEmail(login.getEmail(), pass);
-            return;
+            LoginReturnDTO result = new LoginReturnDTO();
+            result.setLabel("DOCTOR");
+            result.setId(doctor.getId());
+            //Authentication authentication = userAuthenticationManager
+            //        .authenticateDoctor(new UsernamePasswordAuthenticationToken(doctor, "$2a$12$4kZsQIM8ux7u0fgBhMB31eEF9lvgbrZrJSh3M5DxUBLpwidiesdGm"));
+            //result.setToken(jwtUtils.createDoctorToken(authentication));
+            return result;
         }
 
         Patient patient = patientService.getPatientByEmail(login.getEmail());
         if(patient != null) {
-            String pass = passwordEncoderHelper.generateCode();
-            String hashedPass = passwordEncoderHelper.encodePassword(pass);
-            patient.setPassword(hashedPass);
-            patientService.save(patient);
-            emailService.sendEmail(login.getEmail(), pass);
-
-            return;
+            LoginReturnDTO result = new LoginReturnDTO();
+            result.setLabel("DOCTOR");
+            result.setId(patient.getId());
+            //Authentication authentication = userAuthenticationManager
+                    //authenticateDoctor(new UsernamePasswordAuthenticationToken(doctor, "$2a$12$4kZsQIM8ux7u0fgBhMB31eEF9lvgbrZrJSh3M5DxUBLpwidiesdGm"));
+            //result.setToken(jwtUtils.createDoctorToken(authentication));
+            return result;
         }
 
         throw new NotFoundException("Usuário não encontrado");
