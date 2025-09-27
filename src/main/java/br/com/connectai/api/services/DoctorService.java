@@ -21,4 +21,8 @@ public class DoctorService {
     public void save(Doctor doctor) {
         repository.save(doctor);
     }
+
+    public Doctor getAtomicDoctorById(int doctorId) {
+        return repository.findById(doctorId).orElseThrow(() -> new RuntimeException("Doutor não encontrado"));
+    }
 }

@@ -1,5 +1,6 @@
 package br.com.connectai.api.models.db;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,13 @@ public class Doctor {
     @Column(length = 100)
     private String email;
 
+    @Column(name = "specialty", length = 100)
+    private String specialty;
+
+    @Column(name = "name", length = 100)
+    private String name;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
 
@@ -67,6 +75,14 @@ public class Doctor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Boolean getActive() {
@@ -115,5 +131,13 @@ public class Doctor {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
     }
 }
