@@ -13,8 +13,6 @@ import java.util.Map;
 import reactor.core.publisher.Mono;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
-
 @Service
 public class HuggingFaceService {
 
@@ -64,7 +62,7 @@ public class HuggingFaceService {
     private String extractGeneratedText(List<?> response) {
         if (response != null && !response.isEmpty()) {
             Object firstItem = response.get(0);
-            if (firstItem instanceof Map<?,?>) {
+            if (firstItem instanceof Map) {
                 Map<?, ?> responseMap = (Map<?, ?>) firstItem;
                 Object generatedText = responseMap.get("generated_text");
                 if (generatedText != null) {

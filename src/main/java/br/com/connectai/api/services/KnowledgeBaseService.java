@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class KnowledgeBaseService {
 
     private KnowledgeBase knowledgeBase;
-    private JaroWinklerSimilarity similarity = new JaroWinklerSimilarity();
+    private final JaroWinklerSimilarity similarity = new JaroWinklerSimilarity();
 
     @PostConstruct
     public void loadKnowledgeBase() {
@@ -122,7 +122,7 @@ public class KnowledgeBaseService {
         KnowledgeBase.QAPair bestMatch = null;
 
         String normalizedUserQuestion = userQuestion.toLowerCase();
-
+        boolean isDone = false;
         for (KnowledgeBase.QAPair qaPair : knowledgeBase.getQaPairs()) {
             // Similaridade com a pergunta
             double questionSimilarity = similarity.apply(
@@ -138,12 +138,17 @@ public class KnowledgeBaseService {
                 }
             }
 
-            double totalSimilarity = questionSimilarity + Math.min(keywordSimilarity, 0.5);
+            double totalSimilarity = questionSimilarity + keywordSimilarity;
 
-            if (totalSimilarity > maxSimilarity) {
+            if (totalSimilarity > maxSimilarity && keywordSimilarity > 0.8) {
                 maxSimilarity = totalSimilarity;
                 bestMatch = qaPair;
+                isDone = true;
             }
+        }
+
+        if(!isDone) {
+            return null;
         }
 
         // Retorna apenas se a similaridade for razoável
@@ -152,18 +157,77 @@ public class KnowledgeBaseService {
 
     public String getContextForGeneration(String userQuestion) {
         StringBuilder context = new StringBuilder();
-        context.append("Base de conhecimento da empresa:\n\n");
+
+        // Contexto do agente médico
+        context.append("Você é um agente médico especializado e está aqui para ajudar usuários a sanarem dúvidas relacionadas à área da saúde. ");
+        context.append("Suas responsabilidades incluem:\n");
+        context.append("- Responder apenas perguntas relacionadas à saúde, medicina, sintomas, tratamentos e bem-estar\n");
+        context.append("- Fornecer informações educativas e orientações gerais de saúde\n");
+        context.append("- Sempre recomendar consulta médica para diagnósticos e tratamentos específicos\n");
+        context.append("- Não responder perguntas sobre outros assuntos não relacionados à saúde\n");
+        context.append("- Ser empático, profissional e responsável nas respostas\n\n");
+
+        context.append("Diretrizes importantes:\n");
+        context.append("- Para perguntas não relacionadas à saúde, responda educadamente que você é um assistente médico especializado\n");
+        context.append("- Nunca forneça diagnósticos definitivos ou receite medicamentos\n");
+        context.append("- Sempre recomendar consulta médica para diagnósticos e tratamentos específicosSempre enfatize a importância da consulta médica profissional\n");
+        context.append("- Use linguagem clara e acessível, evitando termos técnicos excessivos\n");
+        context.append("- Seja sensível a questões de saúde mental e bem-estar emocional\n");
+        context.append("- Em caso de emergências médicas, oriente a procurar atendimento imediato\n\n");
+
+        context.append("IMPORTANTE: Para perguntas não relacionadas à saúde, responda educadamente que você é um assistente médico e só pode ajudar com questões de saúde.\n\n");
+
+        context.append("Base de conhecimento médico:\n\n");
 
         // Adiciona as perguntas e respostas mais relevantes
         knowledgeBase.getQaPairs().forEach(qa -> {
-            context.append("P: ").append(qa.getQuestion()).append("\n");
-            context.append("R: ").append(qa.getAnswer()).append("\n\n");
+            context.append("Q: ").append(qa.getQuestion()).append("\n");
+            context.append("A: ").append(qa.getAnswer()).append("\n\n");
         });
 
-        context.append("Pergunta do cliente: ").append(userQuestion).append("\n");
-        context.append("Resposta baseada no conhecimento acima:");
+        context.append("Pergunta do usuário: ").append(userQuestion).append("\n");
+        context.append("Resposta profissional como agente médico:");
 
         return context.toString();
+    }
+
+    public boolean isHealthRelatedQuestion(String question) {
+        String normalizedQuestion = question.toLowerCase();
+
+        // Palavras-chave relacionadas à saúde
+        String[] healthKeywords = {
+                "saúde", "médico", "medicina", "doença", "sintoma", "tratamento", "remedio", "remédio",
+                "dor", "febre", "hospital", "clínica", "exame", "diagnóstico", "cirurgia", "medicamento",
+                "enfermagem", "paciente", "consulta", "pressão", "diabetes", "coração", "pulmão",
+                "estômago", "cabeça", "gripe", "resfriado", "alergia", "infecção", "vitamina",
+                "dieta", "alimentação", "exercício", "sono", "stress", "ansiedade", "depressão",
+                "gravidez", "criança", "idoso", "vacinação", "vacina", "prevenção", "cuidado"
+        };
+
+        // Palavras que indicam perguntas não médicas
+        String[] nonHealthKeywords = {
+                "futebol", "música", "filme", "política", "economia", "matemática", "história",
+                "geografia", "tecnologia", "programação", "carro", "viagem", "receita culinária",
+                "jogo", "esporte", "moda", "beleza", "clima", "tempo", "notícia"
+        };
+
+        // Verifica se contém palavras-chave de saúde
+        for (String keyword : healthKeywords) {
+            if (normalizedQuestion.contains(keyword)) {
+                return true;
+            }
+        }
+
+        // Verifica se contém palavras claramente não médicas
+        for (String keyword : nonHealthKeywords) {
+            if (normalizedQuestion.contains(keyword)) {
+                return false;
+            }
+        }
+
+        // Se não identificou claramente, assume que pode ser relacionado à saúde
+        // (melhor errar dando uma resposta educativa do que ignorar uma pergunta médica válida)
+        return true;
     }
 }
 
