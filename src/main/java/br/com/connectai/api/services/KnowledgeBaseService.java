@@ -30,6 +30,7 @@ public class KnowledgeBaseService {
             // Fallback para conhecimento padrão se arquivo não existir
             this.knowledgeBase = createDefaultKnowledgeBase();
         }
+        System.out.println("Knowledge base carregada com " + knowledgeBase.getQaPairs().size() + " pares de Q&A.");
     }
 
     private KnowledgeBase loadFromFile(String filePath) throws IOException {
