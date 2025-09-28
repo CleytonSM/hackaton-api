@@ -136,6 +136,9 @@ public class KnowledgeBaseService {
             // Similaridade com palavras-chave
             double keywordSimilarity = 0.0;
             for (String keyword : qaPair.getKeywords()) {
+                System.out.println(normalizedUserQuestion);
+                System.out.println(keyword);
+                System.out.println(normalizedUserQuestion.contains(keyword));
                 if (normalizedUserQuestion.contains(keyword)) {
                     keywordSimilarity += 0.3;
                 }
