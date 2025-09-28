@@ -6,8 +6,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class AvailableDTO {
     private Integer id;
@@ -15,7 +17,7 @@ public class AvailableDTO {
     private Integer month;
     private String time;
     private int specialtyId;
-    private LocalDateTime datetimeAvailable;
+    private String datetimeAvailable;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -56,16 +58,16 @@ public class AvailableDTO {
         return specialtyId;
     }
 
-    public void setSpecialtyId(int specialtyId) {
-        this.specialtyId = specialtyId;
-    }
-
-    public LocalDateTime getDatetimeAvailable() {
+    public String getDatetimeAvailable() {
         return datetimeAvailable;
     }
 
-    public void setDatetimeAvailable(LocalDateTime datetimeAvailable) {
+    public void setDatetimeAvailable(String datetimeAvailable) {
         this.datetimeAvailable = datetimeAvailable;
+    }
+
+    public void setSpecialtyId(int specialtyId) {
+        this.specialtyId = specialtyId;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -18,7 +18,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -61,7 +66,11 @@ public class ConsultService {
         availabilities.forEach(a -> {
             AvailableDTO dto = new AvailableDTO();
             dto.setId(a.getId());
-            dto.setDatetimeAvailable(a.getDatetimeAvailable());
+            LocalDateTime localDateTime = a.getDatetimeAvailable();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String stringDate = localDateTime.format(formatter);
+
+            dto.setDatetimeAvailable(stringDate);
             dto.setTime(a.getTime());
             dto.setSpecialtyId(SpecialtiesEnum.valueOf(doctor.getSpecialty()).getCode());
             availableDTOS.add(dto);
