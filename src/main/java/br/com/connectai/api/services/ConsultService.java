@@ -2,12 +2,10 @@ package br.com.connectai.api.services;
 
 import br.com.connectai.api.models.db.Available;
 import br.com.connectai.api.models.db.Consult;
-import br.com.connectai.api.models.db.ConsultId;
 import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Patient;
 import br.com.connectai.api.models.dto.AvailableDTO;
 import br.com.connectai.api.models.dto.ConsultDTO;
-import br.com.connectai.api.models.dto.ConsultIdDTO;
 import br.com.connectai.api.models.dto.DoctorDTO;
 import br.com.connectai.api.models.dto.DoctorResponse;
 import br.com.connectai.api.models.enums.SpecialtiesEnum;
@@ -18,12 +16,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -85,12 +80,8 @@ public class ConsultService {
         Doctor doctor = doctorService.getAtomicDoctorById(doctorId);
         Available available = availableService.getAtomicAvailableById(consult.getAvailableId());
         Patient patient = patientService.getAtomicPatientById(consult.getPatientId());
-        ConsultId consultId = new ConsultId();
-        consultId.setDoctorId(doctorId);
-        consultId.setPatientId(consult.getPatientId());
 
         Consult newConsult = new Consult();
-        newConsult.setId(consultId);
         newConsult.setConsultDate(available.getDatetimeAvailable());
         newConsult.setHour(available.getTime());
         newConsult.setHasHappened(Boolean.FALSE);
@@ -112,17 +103,13 @@ public class ConsultService {
     }
 
     @Transactional
-    public void updateConsultStatus(ConsultIdDTO id, boolean hasHappened) {
-        ConsultId consultId = new ConsultId();
-        consultId.setDoctorId(id.getDoctorId());
-        consultId.setPatientId(id.getPatientId());
-
-        Consult consult = getAtomicConsultById(consultId);
+    public void updateConsultStatus(int id, boolean hasHappened) {
+        Consult consult = getAtomicConsultById(id);
         consult.setHasHappened(hasHappened);
         repository.save(consult);
     }
 
-    public Consult getAtomicConsultById(ConsultId id) {
+    public Consult getAtomicConsultById(int id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
     }
 }

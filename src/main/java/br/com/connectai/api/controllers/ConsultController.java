@@ -44,10 +44,10 @@ public class ConsultController {
     }
 
     // update do has happened
-    @PutMapping
-    public ResponseEntity<?> updateConsultStatus(@RequestBody ConsultIdDTO consultUpdate,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateConsultStatus(@PathVariable("id") int id,
                                                  @RequestParam(name = "hasHappened", defaultValue = "false") boolean hasHappened) {
-        service.updateConsultStatus(consultUpdate, hasHappened);
+        service.updateConsultStatus(id, hasHappened);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

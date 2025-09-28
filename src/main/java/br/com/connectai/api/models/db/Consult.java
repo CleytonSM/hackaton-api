@@ -3,6 +3,9 @@ package br.com.connectai.api.models.db;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -16,16 +19,15 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tb_consults")
 public class Consult {
-    @EmbeddedId
-    private ConsultId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @ManyToOne
-    @MapsId("patientId")
     @JoinColumn(name = "id_patient")
     private Patient patient;
 
     @ManyToOne
-    @MapsId("doctorId")
     @JoinColumn(name = "id_doctor")
     private Doctor doctor;
 
@@ -47,12 +49,11 @@ public class Consult {
 
     public Consult() {}
 
-
-    public ConsultId getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(ConsultId id) {
+    public void setId(int id) {
         this.id = id;
     }
 
