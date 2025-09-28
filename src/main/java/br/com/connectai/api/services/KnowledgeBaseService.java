@@ -27,7 +27,7 @@ public class KnowledgeBaseService {
     @PostConstruct
     public void loadKnowledgeBase() {
         try {
-            this.knowledgeBase = loadFromFile("base/knowledge_base.txt");
+            this.knowledgeBase = createDefaultKnowledgeBase();
         } catch (Exception e) {
             // Fallback para conhecimento padrão se arquivo não existir
             this.knowledgeBase = createDefaultKnowledgeBase();
@@ -99,6 +99,216 @@ public class KnowledgeBaseService {
                         "Quanto tempo demora a entrega?",
                         "O prazo de entrega varia conforme sua região: Capital: 2-3 dias úteis, Interior: 5-7 dias úteis. Entregas expressas disponíveis.",
                         Arrays.asList("entrega", "prazo", "tempo", "frete", "envio")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Preciso agendar uma consulta",
+                        "Você pode agendar uma consulta pelo aplicativo ou entrar em contato via Whatsapp ou Ligação.",
+                        Arrays.asList("agendar", "consulta", "aplicativo", "whatsapp", "ligação")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso buscar agenda disponivel",
+                        "Você pode buscar agenda disponivel via aplicativo filtrando a cidade, especialidade, médico ou data. Se você ligar ou entrar em contato via Whatsapp, basta informar seus dados de beneficiario e serão informadas as agendas disponiveis.",
+                        Arrays.asList("buscar", "agenda", "disponivel", "aplicativo", "whatsapp", "filtro")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso visualizar vagas disponiveis",
+                        "Você pode usar o aplicativo para verificar as vagas disponiveis. Se você ligar ou entrar em contato via Whatsapp basta informar os dados para saber das vagas.",
+                        Arrays.asList("visualizar", "vagas", "disponiveis", "aplicativo", "whatsapp")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso reservar ou fazer um agendamento",
+                        "Pelo aplicativo basta selecionar dia, horario e profissional de preferencia. Se voce ligar ou entrar em contato via Whatsapp, basta informar seus dados e sera informada uma agenda para voce escolher e assim ter seu atendimento confirmado.",
+                        Arrays.asList("reservar", "agendamento", "aplicativo", "whatsapp", "profissional")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso confirmar agendamento",
+                        "Pelo aplicativo voce pode confirmar os dados ao fim do agendamento da consulta. Se voce ligar ou entrar em contato via whatsapp, ao fim do atendimento seu atendimento será confirmado.",
+                        Arrays.asList("confirmar", "agendamento", "aplicativo", "whatsapp")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso atualizar meus dados",
+                        "Pode entrar em contato pelo whatsapp e soliticar uma atualização cadastral.",
+                        Arrays.asList("atualizar", "dados", "cadastro", "whatsapp")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Quais informações devo enviar para atualizar meus dados",
+                        "As informações faltantes ou desatualizadas devem ser enviadas.",
+                        Arrays.asList("informações", "atualizar", "dados", "documentos")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso enviar a documentação comprobatoria",
+                        "Pelo chat do whatsapp você pode fazer o envio dos documentos.",
+                        Arrays.asList("enviar", "documentação", "comprobatoria", "whatsapp")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como o atendimento pode atualizar os dados",
+                        "Pode ser feita a atualização dos dados via CRM.",
+                        Arrays.asList("atendimento", "atualizar", "dados", "crm")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como o atendimento pode informar o beneficiario que os dados estão incorretos",
+                        "Via Whatsapp.",
+                        Arrays.asList("atendimento", "informar", "dados", "incorretos", "whatsapp")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso relatar uma cobrança que considero indevida?",
+                        "Você pode entrar em contato com nosso atendimento para iniciar o processo de verificação da cobrança.",
+                        Arrays.asList("relatar", "cobrança", "indevida", "reclamação", "atendimento")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Quais informações preciso fornecer para contestar uma cobrança?",
+                        "Para registrar seu atendimento, você precisa nos informar os dados do boleto e qual procedimento você considera incorreto.",
+                        Arrays.asList("informações", "contestar", "cobrança", "boleto", "procedimento")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Receberei um número de protocolo para minha reclamação?",
+                        "Sim, ao registrar a solicitação, nosso atendente irá fornecer um número de protocolo para seu acompanhamento, seja verbalmente ou por texto.",
+                        Arrays.asList("protocolo", "reclamação", "número", "acompanhamento")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O que acontece depois que eu faço a reclamação?",
+                        "Após o registro, sua solicitação é enviada para análise interna do setor de contas médicas. É necessário aguardar o retorno desta análise para prosseguir.",
+                        Arrays.asList("reclamação", "análise", "contas médicas", "processo")
+                ),
+                new KnowledgeBase.QAPair(
+                        "E se a análise mostrar que a cobrança está correta?",
+                        "Caso a cobrança seja devida, nosso atendimento enviará a você o comprovante da realização do procedimento por e-mail ou outro meio de contato.",
+                        Arrays.asList("análise", "cobrança", "correta", "comprovante", "procedimento")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O que acontece se for confirmado que a cobrança foi errada?",
+                        "Se a cobrança for confirmada como indevida, nosso atendimento entrará em contato para verificar com você a melhor forma de aplicar o desconto.",
+                        Arrays.asList("cobrança", "indevida", "confirmada", "desconto")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso receber o valor da cobrança indevida?",
+                        "Você pode escolher entre ter o desconto aplicado no boleto atual ou receber um crédito para uma cobrança futura.",
+                        Arrays.asList("receber", "cobrança", "indevida", "desconto", "crédito")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como faço para ter o desconto na minha fatura atual?",
+                        "Se você optar pelo desconto no boleto atual, nosso atendimento informará diretamente ao setor financeiro para que a correção seja feita.",
+                        Arrays.asList("desconto", "fatura", "atual", "financeiro")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como faço para usar o valor como crédito no futuro?",
+                        "Para receber o valor como crédito em uma fatura futura, o procedimento é solicitar presencialmente na tesouraria.",
+                        Arrays.asList("crédito", "futuro", "tesouraria", "presencial")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso fazer minha solicitação/cadastro?",
+                        "Este é um processo que deve ser realizado exclusivamente de forma presencial em uma de nossas unidades de atendimento.",
+                        Arrays.asList("solicitação", "cadastro", "presencial", "unidade")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Quais documentos eu preciso levar para o atendimento?",
+                        "É necessário apresentar seu RG e CPF, além de um comprovante de matrícula da faculdade e um comprovante de frequência.",
+                        Arrays.asList("documentos", "rg", "cpf", "matrícula", "frequência")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O que acontece quando eu chegar para o atendimento?",
+                        "Nossa equipe irá solicitar seus documentos, tirar uma cópia, registrar o atendimento em nosso sistema e, ao final, entregar a você uma via física do protocolo.",
+                        Arrays.asList("atendimento", "documentos", "protocolo", "sistema")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O meu cadastro é finalizado na hora?",
+                        "Não. Após o registro inicial, sua documentação é encaminhada internamente para o setor de cadastro para ser validada.",
+                        Arrays.asList("cadastro", "finalizado", "validação", "documentação")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O que acontece se houver algum problema com meus documentos?",
+                        "Se o setor de cadastro identificar que algum documento está incorreto ou faltando, ele notificará nossa equipe de atendimento para que o contato seja feito com você.",
+                        Arrays.asList("problema", "documentos", "incorreto", "faltando", "contato")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como serei informado se precisar corrigir minha documentação?",
+                        "Caso haja necessidade de correção, nossa equipe de atendimento entrará em contato com você por telefone ou por nosso canal de comunicação para solicitar os documentos corretos.",
+                        Arrays.asList("informado", "corrigir", "documentação", "contato", "telefone")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso emitir a segunda via do meu boleto?",
+                        "Você pode emitir a segunda via do boleto diretamente em nossa plataforma, seja pelo site ou pelo aplicativo.",
+                        Arrays.asList("emitir", "segunda via", "boleto", "plataforma", "site", "aplicativo")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Qual o passo a passo para imprimir meu boleto pela plataforma?",
+                        "Primeiro, acesse o site ou aplicativo e faça seu login. Em seguida, navegue até o menu financeiro. Depois, selecione o mês (competência) do boleto que você deseja e clique na opção para impressão da 2ª via.",
+                        Arrays.asList("passo a passo", "imprimir", "boleto", "plataforma", "menu financeiro")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Onde encontro meus boletos e faturas?",
+                        "Todos os seus boletos ficam disponíveis na área do 'menu financeiro' do nosso site ou aplicativo.",
+                        Arrays.asList("encontrar", "boletos", "faturas", "menu financeiro")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como seleciono o boleto do mês que eu quero pagar?",
+                        "Dentro do menu financeiro, basta selecionar a competência (o mês de referência) que você deseja para visualizar e imprimir o boleto correspondente.",
+                        Arrays.asList("selecionar", "boleto", "mês", "competência", "pagar")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso solicitar autorização para um exame ou procedimento médico?",
+                        "Você pode iniciar a solicitação de autorização entrando em contato via Whatsapp ou presencialmente em uma de nossas unidades.",
+                        Arrays.asList("solicitar", "autorização", "exame", "procedimento", "whatsapp", "presencial")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Quais informações preciso enviar para solicitar uma autorização?",
+                        "É necessário fornecer seu nome completo, data de nascimento e enviar uma foto do pedido médico.",
+                        Arrays.asList("informações", "autorização", "nome", "data nascimento", "pedido médico")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O que acontece depois que eu envio os documentos?",
+                        "Nossa equipe de atendimento irá registrar sua solicitação em nosso sistema. Se o procedimento exigir uma análise mais aprofundada (auditoria), você será informado.",
+                        Arrays.asList("documentos", "registro", "sistema", "auditoria", "análise")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Qual o prazo para ter a autorização liberada?",
+                        "Se o seu pedido for para auditoria, o prazo de retorno é de 3 dias úteis para procedimentos comuns e 10 dias úteis para casos que envolvem OPME (Órteses, Próteses e Materiais Especiais).",
+                        Arrays.asList("prazo", "autorização", "liberada", "auditoria", "opme")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso acompanhar o andamento da minha solicitação?",
+                        "Você pode monitorar o status da sua guia de autorização pelo nosso aplicativo, por ligação ou via Whatsapp.",
+                        Arrays.asList("acompanhar", "andamento", "solicitação", "aplicativo", "whatsapp")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como sei se o procedimento foi autorizado?",
+                        "Ao final da análise, nossa equipe informará o resultado. Se for aprovado, você receberá o número do protocolo e o número da guia de autorização.",
+                        Arrays.asList("procedimento", "autorizado", "protocolo", "guia autorização")
+                ),
+                new KnowledgeBase.QAPair(
+                        "O que acontece se meu pedido de autorização for negado?",
+                        "Caso o procedimento não tenha cobertura e seja negado, nossa equipe de atendimento entrará em contato para informar o número do protocolo e o motivo da negativa.",
+                        Arrays.asList("autorização", "negado", "protocolo", "motivo", "cobertura")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como posso solicitar a troca de titularidade do plano?",
+                        "A troca de titularidade é um processo realizado exclusivamente de forma presencial em uma de nossas unidades.",
+                        Arrays.asList("solicitar", "troca", "titularidade", "plano", "presencial")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Quem precisa comparecer ao local para fazer a troca?",
+                        "É necessária a presença tanto do titular atual quanto do futuro titular. Em caso de falecimento do titular atual, apenas o novo responsável precisa comparecer com a documentação necessária.",
+                        Arrays.asList("comparecer", "local", "troca", "titular", "falecimento")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Quais documentos são necessários para a troca de titularidade?",
+                        "É preciso apresentar RG, CPF e comprovante de endereço do novo titular. Se o titular atual for falecido, é necessário trazer também a certidão de óbito.",
+                        Arrays.asList("documentos", "titularidade", "rg", "cpf", "endereço", "certidão óbito")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Qual o procedimento feito no atendimento presencial?",
+                        "No local, nossa equipe irá imprimir um documento padrão que deverá ser assinado. Em seguida, faremos cópias dos documentos, registraremos o atendimento e forneceremos a você uma via física do protocolo.",
+                        Arrays.asList("procedimento", "atendimento", "presencial", "documento", "protocolo")
+                ),
+                new KnowledgeBase.QAPair(
+                        "A troca de titular é concluída na mesma hora?",
+                        "Não. Após o atendimento inicial, sua documentação é encaminhada internamente para o setor de cadastro para ser validada. Este processo é feito uma vez ao dia.",
+                        Arrays.asList("troca", "titular", "concluída", "validação", "cadastro")
+                ),
+                new KnowledgeBase.QAPair(
+                        "Como serei informado se houver algum problema com os documentos?",
+                        "Caso o setor de cadastro identifique alguma pendência ou erro, nossa equipe de atendimento entrará em contato com você por telefone ou outro canal de comunicação para solicitar a correção.",
+                        Arrays.asList("informado", "problema", "documentos", "contato", "correção")
                 )
         );
 
@@ -125,6 +335,11 @@ public class KnowledgeBaseService {
         String normalizedUserQuestion = userQuestion.toLowerCase();
         boolean isDone = false;
         for (KnowledgeBase.QAPair qaPair : knowledgeBase.getQaPairs()) {
+            qaPair = new KnowledgeBase.QAPair(
+                    qaPair.getQuestion().toLowerCase(),
+                    qaPair.getAnswer().toLowerCase(),
+                    extractKeywords(qaPair.getQuestion() + " " + qaPair.getAnswer())
+            );
             System.out.println(qaPair.getQuestion());
             System.out.println(qaPair.getAnswer());
             // Similaridade com a pergunta
