@@ -12,9 +12,18 @@ public class DoctorDTO {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    private double probability;
 
     public Integer getId() {
         return id;
+    }
+
+    public double getProbability() {
+        return probability;
+    }
+
+    public void setProbability(double probability) {
+        this.probability = probability;
     }
 
     public void setId(Integer id) {

@@ -15,11 +15,16 @@ import br.com.connectai.api.repository.ConsultRepository;
 import br.com.connectai.api.repository.DoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -38,11 +43,43 @@ public class ConsultService {
     private ConsultRepository repository;
 
 
-    public List<Doctor> getAllDoctorsBySpecialtyId(int specialtyId) {
+    public List<DoctorDTO> getAllDoctorsBySpecialtyId(int specialtyId, int patientId) {
         SpecialtiesEnum specialties = SpecialtiesEnum.fromCode(specialtyId);
-        // dar um jeito de ranquear com o ML dps
-        return doctorRepository.findBySpecialty(specialties.toString());
+        List<Doctor> doctors = doctorRepository.findBySpecialty(specialties.toString());
+        List<DoctorDTO> doctorDTOS = new ArrayList<>();
+        doctors.forEach(doctor -> {
+            DoctorDTO dto = new DoctorDTO();
+            dto.setId(doctor.getId());
+            dto.setName(doctor.getName());
+            dto.setEmail(doctor.getEmail());
+            dto.setCrm(doctor.getCrm());
+            dto.setSpecialtyId(SpecialtiesEnum.valueOf(doctor.getSpecialty()).getCode());
+            dto.setCreatedAt(doctor.getCreatedAt());
+            dto.setUpdatedAt(doctor.getUpdatedAt());
+            doctorDTOS.add(dto);
+        });
+        // aqui a mágica suja
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "https://hackaton-ml-production.up.railway.app/ml/top-matches/" + patientId;
+
+            ResponseEntity<DoctorDTO[]> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    new HttpEntity<>(doctors),
+                    DoctorDTO[].class
+            );
+
+            if (response.getBody() != null) {
+                return Arrays.asList(response.getBody());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return doctorDTOS;
     }
+
 
     public DoctorResponse getAvailableTimes(int doctorId) {
         Doctor doctor = doctorService.getAtomicDoctorById(doctorId);

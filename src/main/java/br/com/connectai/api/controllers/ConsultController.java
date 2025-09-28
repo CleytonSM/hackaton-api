@@ -21,9 +21,9 @@ public class ConsultController {
     @Autowired
     private ConsultService service;
 
-    @GetMapping("/doctors/{specialtyId}")
-    public ResponseEntity<?> getSpecialities(@PathVariable("specialtyId") int specialtyId) {
-        return new ResponseEntity<>(service.getAllDoctorsBySpecialtyId(specialtyId), HttpStatus.OK);
+    @GetMapping("/doctors/{specialtyId}/{patientId}")
+    public ResponseEntity<?> getSpecialities(@PathVariable("specialtyId") int specialtyId, @PathVariable("patientId") int patientId) {
+        return new ResponseEntity<>(service.getAllDoctorsBySpecialtyId(specialtyId, patientId), HttpStatus.OK);
     }
 
     @GetMapping("/doctors/{doctorId}/availability")
