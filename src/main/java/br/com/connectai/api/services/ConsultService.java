@@ -66,7 +66,7 @@ public class ConsultService {
             ResponseEntity<DoctorDTO[]> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
-                    new HttpEntity<>(doctors),
+                    new HttpEntity<>(doctors, null),
                     DoctorDTO[].class
             );
 
