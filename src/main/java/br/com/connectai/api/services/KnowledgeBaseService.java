@@ -140,7 +140,7 @@ public class KnowledgeBaseService {
                 System.out.println(keyword);
                 System.out.println(normalizedUserQuestion.contains(keyword));
                 if (normalizedUserQuestion.contains(keyword)) {
-                    keywordSimilarity += 0.3;
+                    keywordSimilarity = keywordSimilarity + 0.3;
                 }
             }
 
