@@ -9,8 +9,10 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +40,8 @@ public class KnowledgeBaseService {
 
         try {
             File file = ResourceUtils.getFile(filePath);
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file), java.nio.charset.StandardCharsets.UTF_8))) {
                 String line;
                 String currentQuestion = null;
                 StringBuilder currentAnswer = new StringBuilder();
@@ -47,7 +50,6 @@ public class KnowledgeBaseService {
                     line = line.trim();
 
                     if (line.startsWith("Q:") || line.startsWith("PERGUNTA:")) {
-                        // Salva Q&A anterior se existir
                         if (currentQuestion != null && currentAnswer.length() > 0) {
                             qaPairs.add(new KnowledgeBase.QAPair(
                                     currentQuestion,
@@ -55,8 +57,6 @@ public class KnowledgeBaseService {
                                     extractKeywords(currentQuestion + " " + currentAnswer.toString())
                             ));
                         }
-
-                        // Nova pergunta
                         currentQuestion = line.replaceFirst("^(Q:|PERGUNTA:)\\s*", "");
                         currentAnswer = new StringBuilder();
 
@@ -68,7 +68,6 @@ public class KnowledgeBaseService {
                     }
                 }
 
-                // Adiciona último Q&A
                 if (currentQuestion != null && currentAnswer.length() > 0) {
                     qaPairs.add(new KnowledgeBase.QAPair(
                             currentQuestion,
