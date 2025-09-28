@@ -115,6 +115,7 @@ public class KnowledgeBaseService {
 
     public KnowledgeBase.QAPair findMostSimilarQA(String userQuestion) {
         if (knowledgeBase.getQaPairs().isEmpty()) {
+            System.out.println("knowledgeBase está vazio");
             return null;
         }
 
@@ -148,6 +149,8 @@ public class KnowledgeBaseService {
         }
 
         if(!isDone) {
+            System.out.println("isDone está vazio");
+
             return null;
         }
 

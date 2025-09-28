@@ -31,6 +31,7 @@ public class ChatbotService {
             // Se encontrou uma correspondência boa, usa a resposta da base
             return Mono.just(exactMatch.getAnswer());
         } else {
+            System.out.println("Não encontrou correspondência exata na base de conhecimento. Usando IA generativa.");
             // Se não encontrou, usa IA generativa com contexto médico
             String context = knowledgeBaseService.getContextForGeneration(userMessage);
             return huggingFaceService.generateResponse(context)
