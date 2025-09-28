@@ -27,7 +27,7 @@ public class KnowledgeBaseService {
     @PostConstruct
     public void loadKnowledgeBase() {
         try {
-            this.knowledgeBase = loadFromFile("model/knowledge_base.txt");
+            this.knowledgeBase = createDefaultKnowledgeBase();
         } catch (Exception e) {
             // Fallback para conhecimento padrão se arquivo não existir
             this.knowledgeBase = createDefaultKnowledgeBase();
