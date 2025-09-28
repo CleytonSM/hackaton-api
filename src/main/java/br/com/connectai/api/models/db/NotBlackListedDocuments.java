@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity(name = "tb_not_blacklisted_documents")
+@Entity(name = "tb_not_black_listed")
 @Table
 public class NotBlackListedDocuments {
     @Id
