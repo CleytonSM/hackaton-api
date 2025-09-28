@@ -144,6 +144,8 @@ public class KnowledgeBaseService {
             boolean x = totalSimilarity > maxSimilarity && keywordSimilarity > 0.8;
             System.out.println("totalSimilarity > maxSimilarity && keywordSimilarity > 0.8: ");
             System.out.println(x);
+            System.out.println("keywordSimilarity: " + keywordSimilarity);
+            System.out.println("maxSimilarity: " + maxSimilarity);
             if (totalSimilarity > maxSimilarity && keywordSimilarity > 0.8) {
                 maxSimilarity = totalSimilarity;
                 bestMatch = qaPair;
