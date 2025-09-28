@@ -95,4 +95,9 @@ public class DocumentService {
 
         return documentResponse;
     }
+
+    public List<Document> listDocumentsByDoctorId(int doctorId) {
+        Doctor doctor = doctorService.getAtomicDoctorById(doctorId);
+        return repository.findAllByDoctor(doctor);
+    }
 }

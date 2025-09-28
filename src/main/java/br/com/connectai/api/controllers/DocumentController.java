@@ -33,4 +33,9 @@ public class DocumentController {
     public ResponseEntity<DocumentResponse> listDocumentsByPatientId(@PathVariable int patientId) {
         return new ResponseEntity<>(documentService.listDocumentsByPatientId(patientId), HttpStatus.OK);
     }
+
+    @GetMapping("/doctors/{doctorId}")
+    public ResponseEntity<?> listDocumentsByDoctorId(@PathVariable int doctorId) {
+        return new ResponseEntity<>(documentService.listDocumentsByDoctorId(doctorId), HttpStatus.OK);
+    }
 }
