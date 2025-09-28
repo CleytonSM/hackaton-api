@@ -125,6 +125,8 @@ public class KnowledgeBaseService {
         String normalizedUserQuestion = userQuestion.toLowerCase();
         boolean isDone = false;
         for (KnowledgeBase.QAPair qaPair : knowledgeBase.getQaPairs()) {
+            System.out.println(qaPair.getQuestion());
+            System.out.println(qaPair.getAnswer());
             // Similaridade com a pergunta
             double questionSimilarity = similarity.apply(
                     normalizedUserQuestion,
