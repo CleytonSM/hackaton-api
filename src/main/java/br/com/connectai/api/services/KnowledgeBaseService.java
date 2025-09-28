@@ -107,7 +107,7 @@ public class KnowledgeBaseService {
 
     private List<String> extractKeywords(String text) {
         return Arrays.stream(text.toLowerCase()
-                        .replaceAll("[^a-záàâãéêíóôõúçñ\\s]", "")
+                        //.replaceAll("[^a-záàâãéêíóôõúçñ\\s]", "")
                         .split("\\s+"))
                 .filter(word -> word.length() > 2)
                 .collect(Collectors.toList());
