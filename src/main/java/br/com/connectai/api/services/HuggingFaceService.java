@@ -54,7 +54,7 @@ public class HuggingFaceService {
         return requestSpec
                 .retrieve()
                 .bodyToMono(List.class)
-                .timeout(Duration.ofSeconds(30))
+                .timeout(Duration.ofSeconds(300))
                 .map(this::extractGeneratedText)
                 .onErrorReturn("Desculpe, não consegui processar sua pergunta no momento. Tente novamente mais tarde.");
     }
