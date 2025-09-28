@@ -61,7 +61,7 @@ public class ConsultService {
         // aqui a mágica suja
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8081/ml/top-matches/" + patientId;
+            String url = "https://hackaton-ml-production.up.railway.app/ml/top-matches/" + patientId;
 
             ResponseEntity<DoctorDTO[]> response = restTemplate.exchange(
                     url,
