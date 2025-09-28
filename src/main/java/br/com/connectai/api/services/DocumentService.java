@@ -66,7 +66,7 @@ public class DocumentService {
 
         if(result != null) {
             document.setStatus("reviewing");
-            document.setAuditTime("15 dias para auditoria");
+            document.setAuditTime("5 dias para auditoria");
             repository.save(document);
             return;
         }
