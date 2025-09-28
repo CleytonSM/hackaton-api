@@ -147,4 +147,11 @@ public class DocumentService {
         Doctor doctor = doctorService.getAtomicDoctorById(doctorId);
         return repository.findAllByDoctor(doctor);
     }
+
+    public void updateDocumentStatus(int documentId, String status) {
+        Document document = repository.findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Documento não encontrado"));
+        document.setStatus(status);
+        repository.save(document);
+    }
 }

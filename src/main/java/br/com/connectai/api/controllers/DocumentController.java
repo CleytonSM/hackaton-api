@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,5 +38,11 @@ public class DocumentController {
     @GetMapping("/doctors/{doctorId}")
     public ResponseEntity<?> listDocumentsByDoctorId(@PathVariable int doctorId) {
         return new ResponseEntity<>(documentService.listDocumentsByDoctorId(doctorId), HttpStatus.OK);
+    }
+
+    @PutMapping("/{documentId}/status")
+    public ResponseEntity<?> updateDocumentStatus(@PathVariable int documentId, @RequestParam("status") String status) {
+        documentService.updateDocumentStatus(documentId, status);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

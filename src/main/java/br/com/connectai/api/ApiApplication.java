@@ -3,6 +3,7 @@ package br.com.connectai.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -139,9 +140,18 @@ Q:Como serei informado se houver algum problema com os documentos?
 A:Caso o setor de cadastro identifique alguma pendência ou erro, nossa equipe de atendimento entrará em contato com você por telefone ou outro canal de comunicação para solicitar a correção.
 """;
 
-		try (FileWriter writer = new FileWriter("base/knowledge_base.txt")) {
+		try {
+			// cria a pasta "base" se não existir
+			File dir = new File("base");
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
+			FileWriter writer = new FileWriter("base/knowledge_base.txt");
 			writer.write(conteudo);
-			System.out.println("Arquivo knowledge_base.txt criado/substituído em model/ com sucesso!");
+			writer.close();
+
+			System.out.println("Arquivo knowledge_base.txt criado/substituído em base/ com sucesso!");
 		} catch (IOException e) {
 			System.out.println("Erro ao criar o arquivo: " + e.getMessage());
 		}
