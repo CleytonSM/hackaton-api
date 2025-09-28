@@ -30,6 +30,9 @@ public class Document {
     @Column(length = 100)
     private String name;
 
+    @Column(name = "audit_time")
+    private String auditTime;
+
     @Column(length = 20)
     private String status; // 'approved', 'reviewing', 'denied'
 
@@ -37,6 +40,14 @@ public class Document {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getAuditTime() {
+        return auditTime;
+    }
+
+    public void setAuditTime(String auditTime) {
+        this.auditTime = auditTime;
     }
 
     public void setId(Integer id) {

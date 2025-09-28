@@ -3,10 +3,14 @@ package br.com.connectai.api.services;
 import br.com.connectai.api.models.db.BlackListedDocument;
 import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Document;
+import br.com.connectai.api.models.db.NotBlackListedDocuments;
+import br.com.connectai.api.models.db.OpmeDocuments;
 import br.com.connectai.api.models.db.Patient;
 import br.com.connectai.api.models.dto.DocumentResponse;
 import br.com.connectai.api.repository.BlackListedDocumentsRepository;
 import br.com.connectai.api.repository.DocumentRepository;
+import br.com.connectai.api.repository.NotBlackListedDocumentsRepository;
+import br.com.connectai.api.repository.OpmeDocumentsRepository;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -29,6 +33,10 @@ public class DocumentService {
     private BlackListedDocumentsRepository blackListedDocumentsRepository;
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private OpmeDocumentsRepository opmeDocumentsRepository;
+    @Autowired
+    private NotBlackListedDocumentsRepository notBlackListedDocumentsRepository;
 
     public void uploadDocument(int patientId, int doctorId, MultipartFile file) throws IOException {
         Patient patient = patientService.getAtomicPatientById(patientId);
@@ -39,7 +47,7 @@ public class DocumentService {
         document.setName(file.getOriginalFilename());
         document.setPath("documents/" + patientId + "/" + file.getOriginalFilename());
         document.setStatus("approved"); // Status padrão
-
+        boolean done = false;
         // EXTRAIR TEXTO DIRETAMENTE DO ARQUIVO SEM SALVAR
         String words = extractWordsFromPdfSimple(file).toUpperCase();
 
@@ -51,12 +59,51 @@ public class DocumentService {
                 .toList();
 
         // Se encontrar alguma palavra da blacklist, muda status para "reviewing"
-        blacklistedWords.stream()
+        String result = blacklistedWords.stream()
                 .filter(words::contains)
                 .findFirst()
-                .ifPresent(x -> document.setStatus("reviewing"));
+                .orElse(null);
 
+        if(result != null) {
+            document.setStatus("reviewing");
+            document.setAuditTime("15 dias para auditoria");
+            repository.save(document);
+            return;
+        }
+
+        List<OpmeDocuments> opmeDocuments = opmeDocumentsRepository.findAll();
+        List<String> opmeDocumentsWords = opmeDocuments.stream()
+                .map(OpmeDocuments::getProcess)
+                .map(String::toUpperCase)
+                .toList();
+        String result2 = opmeDocumentsWords.stream()
+                .filter(words::contains)
+                .findFirst().orElse(null);
+        if(result2 != null) {
+            document.setStatus("reviewing");
+            document.setAuditTime("10 dias para auditoria");
+            repository.save(document);
+            return;
+        }
+
+        List<NotBlackListedDocuments> notBlackListedDocuments = notBlackListedDocumentsRepository.findAll();
+        List<String> notBlacklistedWords = notBlackListedDocuments.stream()
+                .map(NotBlackListedDocuments::getProcess)
+                .map(String::toUpperCase)
+                .toList();
+        String result3 = notBlacklistedWords.stream()
+                .filter(words::contains)
+                .findFirst().orElse(null);
+
+        if(result3 != null) {
+            document.setStatus("approved");
+            document.setAuditTime("Aprovado automaticamente");
+            repository.save(document);
+            return;
+        }
+        document.setStatus("denied");
         repository.save(document);
+        throw new RuntimeException("Documento negado" );
     }
 
     // VERSÃO SIMPLES - Extrai texto diretamente do

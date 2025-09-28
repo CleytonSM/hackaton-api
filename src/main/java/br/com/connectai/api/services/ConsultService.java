@@ -105,9 +105,20 @@ public class ConsultService {
 
         consults.forEach(consult -> {
             ConsultSummaryDTO dto = new ConsultSummaryDTO();
+            DoctorDTO doctorDTO = new DoctorDTO();
+            Doctor doctor = consult.getDoctor();
+            doctorDTO.setId(doctor.getId());
+            doctorDTO.setName(doctor.getName());
+            doctorDTO.setEmail(doctor.getEmail());
+            doctorDTO.setCrm(doctor.getCrm());
+            doctorDTO.setSpecialtyId(SpecialtiesEnum.valueOf(doctor.getSpecialty()).getCode());
+            doctorDTO.setCreatedAt(doctor.getCreatedAt());
+            doctorDTO.setUpdatedAt(doctor.getUpdatedAt());
+
+
             dto.setId(consult.getId());
             dto.setPatient(consult.getPatient());
-            dto.setDoctor(consult.getDoctor());
+            dto.setDoctor(doctorDTO);
 
             LocalDateTime localDateTime = consult.getConsultDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

@@ -8,7 +8,7 @@ import java.sql.Date;
 public class ConsultSummaryDTO {
     private int id;
     private Patient patient;
-    private Doctor doctor;
+    private DoctorDTO doctor;
     private Integer month;
     private String description;
     private Boolean hasHappened;
@@ -35,11 +35,11 @@ public class ConsultSummaryDTO {
         this.patient = patient;
     }
 
-    public Doctor getDoctor() {
+    public DoctorDTO getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(Doctor doctor) {
+    public void setDoctor(DoctorDTO doctor) {
         this.doctor = doctor;
     }
 
