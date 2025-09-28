@@ -6,6 +6,7 @@ import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Patient;
 import br.com.connectai.api.models.dto.AvailableDTO;
 import br.com.connectai.api.models.dto.ConsultDTO;
+import br.com.connectai.api.models.dto.ConsultSummaryDTO;
 import br.com.connectai.api.models.dto.DoctorDTO;
 import br.com.connectai.api.models.dto.DoctorResponse;
 import br.com.connectai.api.models.enums.SpecialtiesEnum;
@@ -97,9 +98,29 @@ public class ConsultService {
         return repository.findAllByDoctor(doctor);
     }
 
-    public List<Consult> getAllConsultsByPatient(int patientId) {
+    public List<ConsultSummaryDTO> getAllConsultsByPatient(int patientId) {
         Patient patient = patientService.getAtomicPatientById(patientId);
-        return repository.findAllByPatient(patient);
+        List<Consult> consults = repository.findAllByPatient(patient);
+        List<ConsultSummaryDTO> consultDTOS = new ArrayList<>();
+
+        consults.forEach(consult -> {
+            ConsultSummaryDTO dto = new ConsultSummaryDTO();
+            dto.setId(consult.getId());
+            dto.setPatient(consult.getPatient());
+            dto.setDoctor(consult.getDoctor());
+
+            LocalDateTime localDateTime = consult.getConsultDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String stringDate = localDateTime.format(formatter);
+
+            dto.setConsultDate(stringDate);
+            dto.setHour(consult.getHour());
+            dto.setHasHappened(consult.getHasHappened());
+            dto.setDescription(consult.getDescription());
+            dto.setMonth(consult.getMonth());
+            consultDTOS.add(dto);
+        });
+        return consultDTOS;
     }
 
     @Transactional

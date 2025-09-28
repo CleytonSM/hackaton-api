@@ -54,6 +54,6 @@ public class ConsultController {
     // historico de consultas do paciente
     @GetMapping("/patient/{patientId}/all")
     public ResponseEntity<?> getAllConsults(@PathVariable("patientId") int patientId) {
-        return new ResponseEntity<>(service.getAllConsultsByPatient(patientId), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(service.getAllConsultsByPatient(patientId), HttpStatus.OK);
     }
 }
