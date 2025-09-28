@@ -5,8 +5,10 @@ import br.com.connectai.api.models.db.Consult;
 import br.com.connectai.api.models.db.ConsultId;
 import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Patient;
+import br.com.connectai.api.models.dto.AvailableDTO;
 import br.com.connectai.api.models.dto.ConsultDTO;
 import br.com.connectai.api.models.dto.ConsultIdDTO;
+import br.com.connectai.api.models.dto.DoctorDTO;
 import br.com.connectai.api.models.dto.DoctorResponse;
 import br.com.connectai.api.models.enums.SpecialtiesEnum;
 import br.com.connectai.api.repository.AvailableRepository;
@@ -16,6 +18,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,9 +46,28 @@ public class ConsultService {
     public DoctorResponse getAvailableTimes(int doctorId) {
         Doctor doctor = doctorService.getAtomicDoctorById(doctorId);
         List<Available> availabilities = availableRepository.findAllByDoctor(doctor);
+        List<AvailableDTO> availableDTOS = new ArrayList<>();
         DoctorResponse response = new DoctorResponse();
-        response.setDoctor(doctor);
-        response.setAvailabilities(availabilities);
+        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setId(doctor.getId());
+        doctorDTO.setName(doctor.getName());
+        doctorDTO.setEmail(doctor.getEmail());
+        doctorDTO.setCrm(doctor.getCrm());
+        doctorDTO.setSpecialtyId(SpecialtiesEnum.valueOf(doctor.getSpecialty()).getCode());
+        doctorDTO.setCreatedAt(doctor.getCreatedAt());
+        doctorDTO.setUpdatedAt(doctor.getUpdatedAt());
+
+        response.setDoctor(doctorDTO);
+        availabilities.forEach(a -> {
+            AvailableDTO dto = new AvailableDTO();
+            dto.setId(a.getId());
+            dto.setDatetimeAvailable(a.getDatetimeAvailable());
+            dto.setTime(a.getTime());
+            dto.setSpecialtyId(SpecialtiesEnum.valueOf(doctor.getSpecialty()).getCode());
+            availableDTOS.add(dto);
+        });
+
+        response.setAvailabilities(availableDTOS);
         return response;
     }
 
