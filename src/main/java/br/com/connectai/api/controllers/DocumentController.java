@@ -21,9 +21,9 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
-    @PostMapping("/upload/{patientId}")
-    public void uploadDocument(@PathVariable int patientId, @RequestParam("file") MultipartFile file) throws IOException {
-        documentService.uploadDocument(patientId, file);
+    @PostMapping("/upload/{patientId}/{doctorId}")
+    public void uploadDocument(@PathVariable int patientId, @RequestParam("file") MultipartFile file, @PathVariable int doctorId) throws IOException {
+        documentService.uploadDocument(patientId, doctorId, file);
     }
 
     // update documebnt by patientId and documentId

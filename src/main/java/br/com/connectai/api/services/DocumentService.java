@@ -1,35 +1,23 @@
 package br.com.connectai.api.services;
 
 import br.com.connectai.api.models.db.BlackListedDocument;
+import br.com.connectai.api.models.db.Doctor;
 import br.com.connectai.api.models.db.Document;
 import br.com.connectai.api.models.db.Patient;
 import br.com.connectai.api.models.dto.DocumentResponse;
 import br.com.connectai.api.repository.BlackListedDocumentsRepository;
 import br.com.connectai.api.repository.DocumentRepository;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Service
 public class DocumentService {
@@ -39,11 +27,15 @@ public class DocumentService {
     private PatientService patientService;
     @Autowired
     private BlackListedDocumentsRepository blackListedDocumentsRepository;
+    @Autowired
+    private DoctorService doctorService;
 
-    public void uploadDocument(int patientId, MultipartFile file) throws IOException {
+    public void uploadDocument(int patientId, int doctorId, MultipartFile file) throws IOException {
         Patient patient = patientService.getAtomicPatientById(patientId);
+        Doctor doctor = doctorService.getAtomicDoctorById(doctorId);
         Document document = new Document();
         document.setPatient(patient);
+        document.setDoctor(doctor);
         document.setName(file.getOriginalFilename());
         document.setPath("documents/" + patientId + "/" + file.getOriginalFilename());
         document.setStatus("approved"); // Status padrão
